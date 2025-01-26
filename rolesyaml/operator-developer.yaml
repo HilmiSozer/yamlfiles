@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: testuser
+  namespace: staging
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: testuser-token
+  namespace: staging
+  annotations:
+    kubernetes.io/service-account.name: testuser
+type: kubernetes.io/service-account-token
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: operator
+  namespace: staging
+rules:
+  - verbs:
+      - get
+      - list
+      - watch
+    apiGroups:
+      - '*'
+    resources:
+      - '*'
+  - verbs:
+      - get
+      - list
+      - watch
+      - edit
+      - patch
+    apiGroups:
+      - '*'
+    resources:
+      - deployments/scale
+      - deployments
+      - cronjobs
+      - jobs
+      - replicasets
+  - verbs:
+      - get
+      - list
+      - watch
+      - delete
+    apiGroups:
+      - '*'
+    resources:
+      - pods
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: testuser-operator-rolebinding
+  namespace: staging
+subjects:
+  - kind: ServiceAccount
+    name: testuser
+    namespace: staging
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: operator
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: list-namespaces-role
+rules:
+  - verbs:
+      - get
+      - list
+    apiGroups:
+      - ''
+    resources:
+      - namespaces
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: list-namespaces-testuser
+subjects:
+  - kind: ServiceAccount
+    name: testuser
+    namespace: staging
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: list-namespaces-role

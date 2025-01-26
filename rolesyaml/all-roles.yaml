@@ -1,0 +1,134 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: cs-team-role
+  namespace: staging
+rules:
+  - verbs:
+      - get
+      - list
+      - watch
+    apiGroups:
+      - '*'
+    resources:
+      - '*'
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1 #same as developer 
+kind: Role
+metadata:
+  name: lead-developer-team-role
+  namespace: staging
+rules:
+  - verbs:
+      - get
+      - list
+      - watch
+    apiGroups:
+      - '*'
+    resources:
+      - '*'
+  - verbs:
+      - get
+      - list
+      - watch
+      - edit
+      - patch
+    apiGroups:
+      - '*'
+    resources:
+      - deployments/scale
+      - deployments
+      - cronjobs
+      - jobs
+      - replicasets
+  - verbs:
+      - get
+      - list
+      - watch
+      - delete
+    apiGroups:
+      - '*'
+    resources:
+      - pods
+      
+---
+apiVersion: rbac.authorization.k8s.io/v1 #same as leaddeveloper 
+kind: Role
+metadata:
+  name: operator
+  namespace: staging
+rules:
+  - verbs:
+      - get
+      - list
+      - watch
+    apiGroups:
+      - '*'
+    resources:
+      - '*'
+  - verbs:
+      - get
+      - list
+      - watch
+      - edit
+      - patch
+    apiGroups:
+      - '*'
+    resources:
+      - deployments/scale
+      - deployments
+      - cronjobs
+      - jobs
+      - replicasets
+  - verbs:
+      - get
+      - list
+      - watch
+      - delete
+    apiGroups:
+      - '*'
+    resources:
+   
+      - pods
+---   
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: product-team-role
+  namespace: staging
+rules:
+  - verbs:
+      - get
+      - list
+      - watch
+    apiGroups:
+      - '*'
+    resources:
+      - '*'
+  - verbs:
+      - get
+      - list
+      - watch
+      - delete
+    apiGroups:
+      - '*'
+    resources:
+      - pods
+
+---
+
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: list-namespaces-role
+rules:
+  - verbs:
+      - get
+      - list
+    apiGroups:
+      - ''
+    resources:
+      - namespaces

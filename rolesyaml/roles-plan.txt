@@ -1,0 +1,31 @@
+1) CS ekibi :(cs-team-role)
+Yetkiler : Her şey readonly yetki
+
+2) Product ekibi :
+Yetkiler : Her şey readonly pods delete (product-team-role)
+
+
+
+
+
+3) Test Ekibi :
+Yetkiler : 
+Canlı Ortam : Herşey readonly (cs-team-role-include)
+Test Ortamları : Herşey readonly, deployment, cronjob, joblara edit yetkisi |podlara delete yetkisi(operator)
+
+4) Developer Ekibi :
+Yetkiler : 
+Canlı ortam : herşey readonly (cs-team-role-include)
+Test Ortam :  Herşey readonly, deployment, cronjob, joblara edit yetkisi podlara delete yetkisi(operator)
+
+3. ve 4. Role ler için ortak isim : operator
+
+
+
+5) Lead Developer : 
+Yetkiler :
+Canlı Ortam : Herşey readonly, deployment, cronjob, joblara edit yetkisi podlara delete yetkisi(lead-developer-team-role)
+Test Ortam : Herşey readonly, deployment, cronjob, joblara edit yetkisi podlara delete yetkisi (lead-developer-team-role)
+
+
+
